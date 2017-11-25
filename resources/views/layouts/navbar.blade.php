@@ -21,6 +21,7 @@
 				</a>
 
 				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="{{ URL::route('afiliados.consultar') }}"></i> Consultar</a></li>
 					<li><a href="{{ URL::route('afiliados.index') }}"></i> Ver nómina</a></li>
 					<li><a href="{{ URL::route('afiliados.create') }}"></i> Agregar afiliado</a></li>
 				</ul>
@@ -61,6 +62,7 @@
 				</a>
 
 				<ul class="dropdown-menu dropdown-menu-right">
+					<li><a href="{{ URL::route('elecciones.consultar') }}"></i> Consultar</a></li>
 					<li><a href="{{ URL::route('elecciones.create') }}">Nómina</a></li>
 					<li><a href="{{ URL::route('elecciones.index') }}">Listado de votación</a></li>
 				</ul>

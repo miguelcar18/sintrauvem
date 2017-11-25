@@ -70,7 +70,7 @@
                     @show
                     <!-- Footer -->
                     <div class="footer text-white">
-                        &copy; 2017. <a href="#" class="text-white">Sintrauvem</a> por <a href="#" class="text-white" target="_blank">Universidad de Oriente Núcleo Monagas</a>
+                        &copy; 2017. <a href="#" class="text-white">Sintrauvem - SINDICATO DE TRABAJADORES UNIVERSITARIOS DE VENEZUELA DEL ESTADO MONAGAS</a>
                     </div>
                     <!-- /footer -->
 

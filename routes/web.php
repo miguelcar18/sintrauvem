@@ -24,6 +24,12 @@ Route::get('buscarAtleta/{id?}', ['as' => 'buscarAtleta', 'uses' =>'AtletaContro
 Route::get('atletas-consultar', ['as' => 'atletas.consultar', 'uses' =>'AtletaController@consultar']);
 Route::get('direccionConsulta/{disciplina?}/{sexo?}', ['as' => 'direccionConsulta', 'uses' =>'AtletaController@resultados']);
 Route::get('direccionReporte/{disciplina?}/{sexo?}', ['as' => 'direccionReporte', 'uses' =>'AtletaController@reporte']);
+Route::get('afiliados-consultar', ['as' => 'afiliados.consultar', 'uses' =>'AfiliadoController@consultar']);
+Route::get('afiliadosDireccionConsulta/{estado?}/{dependencia?}', ['as' => 'afiliadosDireccionConsulta', 'uses' =>'AfiliadoController@resultados']);
+Route::get('afiliadosDireccionReporte/{estado?}/{dependencia?}', ['as' => 'afiliadosDireccionReporte', 'uses' =>'AfiliadoController@reporte']);
+Route::get('elecciones-consultar', ['as' => 'elecciones.consultar', 'uses' =>'EleccionesController@consultar']);
+Route::get('eleccionesDireccionConsulta/{centro?}/{mesa?}', ['as' => 'eleccionesDireccionConsulta', 'uses' =>'EleccionesController@resultados']);
+Route::get('eleccionesDireccionReporte/{centro?}/{mesa?}', ['as' => 'eleccionesDireccionReporte', 'uses' =>'EleccionesController@reporte']);
 Route::resource('eventos', 'EventoController');
 Route::get('restaurar-contrasena', ['as' => 'change_password', 'uses' =>'LoginController@changePassword']);
 Route::post('profile/change-password', ['as' => 'postChangePassword', 'uses' => 'LoginController@postChangePassword']);

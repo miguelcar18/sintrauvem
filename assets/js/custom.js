@@ -545,16 +545,34 @@ $(function() {
                     $("button#cancelar").addClass('disabled');
                 },
                 success:function(respuesta){
-                    new PNotify({
-                        title: 'Realizado',
-                        text: 'Afiliado '+accion+' satisfactoriamente.',
-                        addclass: 'bg-success alert-styled-right',
-                        type: 'success'
-                    });
-                    if($("button#submit").attr('data') == 1){
-                        $('form#afiliadoForm').reset();
-                        $("#tablaCargaFamiliar tbody > tr").remove();
-                        $(document).find('.validation-valid-label').remove();
+                    var alertMessage = '';
+                    var count = 0;
+                    if(respuesta.validations == false){
+                        $.each(respuesta.errors, function(index, value){
+                            count++;
+                            alertMessage+= count+". "+value+"<br>";
+                        });
+                        new PNotify({
+                            title: 'Alerta',
+                            text: alertMessage,
+                            addclass: 'bg-primary alert-styled-right',
+                            type: 'info'
+                        });
+                    }
+                    else if(respuesta.validations == true){
+                        new PNotify({
+                            title: 'Realizado',
+                            text: 'Afiliado '+accion+' satisfactoriamente.',
+                            addclass: 'bg-success alert-styled-right',
+                            type: 'success'
+                        });
+                        console.log("se ejecuta la validation true");
+                        if($("button#afiliadoSubmit").attr('data') == 1){
+                            console.log("se ejecuta el data = 1");
+                            $('form#afiliadoForm').reset();
+                            $("#tablaCargaFamiliar tbody > tr").remove();
+                            $(document).find('.validation-valid-label').remove();
+                        }
                     }
                     $("button#afiliadoSubmit").removeClass('disabled');
                     $("button#cancelar").removeClass('disabled');
@@ -848,6 +866,76 @@ $(function() {
         }
         else {
             var url = $(this).data("href")+"/"+$(this).data("disciplina")+"/"+$(this).data("sexo");
+            window.open(url, '');
+        }
+    });
+
+     $("button#afiliadoConsultar").on('click', function(e){
+        var valorEstado = $("select#consultaEstado").val() != "" ? $("select#consultaEstado").val() : "-1";
+        var valorDependencia = $("select#consultaDependencia").val() != "" ? $("select#consultaDependencia").val() : "-1";
+        var url = $("#direccionConsulta").val();
+        var contenido = "";
+        $("#reporteAfiliados").attr("data-estado", valorEstado);
+        $("#reporteAfiliados").attr("data-dependencia", valorDependencia);
+
+        $.ajax({
+            url: url+"/"+valorEstado+"/"+valorDependencia,
+            type: "GET",
+            success: function(respuesta){
+                tablaData.clear().draw();
+                respuesta.respuesta.forEach(function(element) {
+                    tablaData.row.add([
+                        element.cedula, 
+                        element.nombre, 
+                        element.apellido, 
+                    ]).draw();
+                });
+            }
+        });
+    });
+
+    $("button#reporteAfiliados").on('click', function(){
+        if($(this).data("estado") == "-" && $(this).data("dependencia") == "-"){
+            alert("Debe realizar una consulta primero");
+        }
+        else {
+            var url = $(this).data("href")+"/"+$(this).data("estado")+"/"+$(this).data("dependencia");
+            window.open(url, '');
+        }
+    });
+
+    $("button#eleccionConsultar").on('click', function(e){
+        var valorCentro = $("select#consultaCentro").val() != "" ? $("select#consultaCentro").val() : "-1";
+        var valorMesa = $("select#consultaMesa").val() != "" ? $("select#consultaMesa").val() : "-1";
+        var url = $("#direccionConsulta").val();
+        var contenido = "";
+        $("#reporteElecciones").attr("data-centro", valorCentro);
+        $("#reporteElecciones").attr("data-mesa", valorMesa);
+
+        $.ajax({
+            url: url+"/"+valorCentro+"/"+valorMesa,
+            type: "GET",
+            success: function(respuesta){
+                tablaData.clear().draw();
+                respuesta.respuesta.forEach(function(element) {
+                    tablaData.row.add([
+                        element.cedula, 
+                        element.nombre, 
+                        element.apellido, 
+                        element.centro, 
+                        element.mesa
+                    ]).draw();
+                });
+            }
+        });
+    });
+
+    $("button#reporteElecciones").on('click', function(){
+        if($(this).data("centro") == "-" && $(this).data("mesa") == "-"){
+            alert("Debe realizar una consulta primero");
+        }
+        else {
+            var url = $(this).data("href")+"/"+$(this).data("centro")+"/"+$(this).data("mesa");
             window.open(url, '');
         }
     });

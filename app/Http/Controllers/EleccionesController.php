@@ -135,4 +135,49 @@ class EleccionesController extends Controller
             return Redirect::route('elecciones.index');
         }
     }
+
+    public function consultar()
+    {
+        return view('elecciones.consultar');
+    }
+
+    public function resultados($centro, $mesa)
+    {
+        if($centro == "-1" && $mesa == "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido, elecciones.centro, elecciones.mesa FROM elecciones INNER JOIN afiliados ON elecciones.afiliado = afiliados.id");
+        }
+        elseif($centro == "-1" && $mesa != "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido, elecciones.centro, elecciones.mesa FROM elecciones INNER JOIN afiliados ON elecciones.afiliado = afiliados.id WHERE elecciones.mesa = '".$mesa."'");
+        }
+        elseif($mesa == "-1" && $centro != "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido, elecciones.centro, elecciones.mesa FROM elecciones INNER JOIN afiliados ON elecciones.afiliado = afiliados.id WHERE elecciones.centro  = '".$centro."'");
+        }
+        else{
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido, elecciones.centro, elecciones.mesa FROM elecciones INNER JOIN afiliados ON elecciones.afiliado = afiliados.id WHERE elecciones.centro  = '".$centro."' and elecciones.mesa = '".$mesa."'");
+        }
+        return response()->json([
+            'respuesta' => $atletas
+        ]);
+    }
+
+    public function reporte($centro, $mesa){
+        if($centro == "-1" && $mesa == "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido, elecciones.centro, elecciones.mesa FROM elecciones INNER JOIN afiliados ON elecciones.afiliado = afiliados.id");
+        }
+        elseif($centro == "-1" && $mesa != "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido, elecciones.centro, elecciones.mesa FROM elecciones INNER JOIN afiliados ON elecciones.afiliado = afiliados.id WHERE elecciones.mesa = '".$mesa."'");
+        }
+        elseif($mesa == "-1" && $centro != "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido, elecciones.centro, elecciones.mesa FROM elecciones INNER JOIN afiliados ON elecciones.afiliado = afiliados.id WHERE elecciones.centro  = '".$centro."'");
+        }
+        else{
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido, elecciones.centro, elecciones.mesa FROM elecciones INNER JOIN afiliados ON elecciones.afiliado = afiliados.id WHERE elecciones.centro  = '".$centro."' and elecciones.mesa = '".$mesa."'");
+        }
+
+        $centro = $centro != "-1" ? $centro : "Todas";
+        $mesa = $mesa != "-1" ? $mesa : "Todas";
+
+        $pdf = \PDF::loadView('elecciones.reporte', compact('atletas', 'estado', 'dependencia'));
+        return $pdf->stream('reporteElecciones.pdf');
+    }
 }

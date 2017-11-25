@@ -7,6 +7,7 @@ use App\Cargos;
 use App\CargaFamiliar;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Http\Requests\AfiliadoRequest;
 use Session;
 use App;
 use Auth;
@@ -50,7 +51,7 @@ class AfiliadoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AfiliadoRequest $request)
     {
         if($request->ajax())
         {
@@ -115,7 +116,7 @@ class AfiliadoController extends Controller
             }
 
             return response()->json([
-                'nuevoContenido' => $request->all()
+                'validations' => true
             ]);
         }
     }
@@ -242,7 +243,8 @@ class AfiliadoController extends Controller
             }
 
             return response()->json([
-                'nuevoContenido' => $campos           
+                'validations'       => true,
+                'nuevoContenido'    => $campos           
             ]);
         }
     }
@@ -275,5 +277,50 @@ class AfiliadoController extends Controller
             Session::flash('message', $mensaje);
             return Redirect::route('afiliados.index');
         }
+    }
+
+    public function consultar()
+    {
+        return view('afiliados.consultar');
+    }
+
+    public function resultados($estado, $dependencia)
+    {
+        if($estado == "-1" && $dependencia == "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido FROM afiliados");
+        }
+        elseif($estado == "-1" && $dependencia != "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido FROM afiliados WHERE afiliados.dependencia = '".$dependencia."'");
+        }
+        elseif($dependencia == "-1" && $estado != "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido FROM afiliados WHERE afiliados.status  = '".$estado."'");
+        }
+        else{
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido FROM afiliados WHERE afiliados.status  = '".$estado."' and afiliados.dependencia = '".$dependencia."'");
+        }
+        return response()->json([
+            'respuesta' => $atletas
+        ]);
+    }
+
+    public function reporte($estado, $dependencia){
+        if($estado == "-1" && $dependencia == "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido FROM afiliados");
+        }
+        elseif($estado == "-1" && $dependencia != "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido FROM afiliados WHERE afiliados.dependencia = '".$dependencia."'");
+        }
+        elseif($dependencia == "-1" && $estado != "-1"){
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido FROM afiliados WHERE  afiliados.status  = '".$estado."'");
+        }
+        else{
+            $atletas = \DB::select("SELECT afiliados.cedula, afiliados.nombre, afiliados.apellido FROM afiliados WHERE afiliados.status  = '".$estado."' and afiliados.dependencia = '".$dependencia."'");
+        }
+
+        $estado = $estado != "-1" ? $estado : "Todas";
+        $dependencia = $dependencia != "-1" ? $dependencia : "Todas";
+
+        $pdf = \PDF::loadView('afiliados.reporte', compact('atletas', 'estado', 'dependencia'));
+        return $pdf->stream('reporteAfiliados.pdf');
     }
 }
