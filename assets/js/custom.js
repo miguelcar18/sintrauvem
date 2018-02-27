@@ -19,6 +19,8 @@ function eliminarFila(fila){ fila.parentNode.parentNode.remove(); }
 function agregarValor(){
     var tabla           = document.getElementById("tablaCargaFamiliar").tBodies[0];
     var nombreRelacion  = document.getElementById("nombreRelacion").value;
+    var cedulaRelacion  = document.getElementById("cedulaRelacion").value;
+    var edadRelacion    = document.getElementById("edadRelacion").value;
     var relacion        = document.getElementById("relacion").value;
     var combo           = document.getElementById("relacion");
     var selected        = combo.options[combo.selectedIndex].text;
@@ -29,17 +31,29 @@ function agregarValor(){
     else if(nombreRelacion == ""){
         alert("Ingrese un nombre");
     }
+    else if(cedulaRelacion == ""){
+        alert("Ingrese una cédula");
+    }
+    else if(edadRelacion == ""){
+        alert("Ingrese una edad");
+    }
     else{
         var fila = tabla.insertRow(-1);
         var celda0 = fila.insertCell(0);
         var celda1 = fila.insertCell(1);
         var celda2 = fila.insertCell(2);
+        var celda3 = fila.insertCell(3);
+        var celda4 = fila.insertCell(4);
 
         celda0.innerHTML = '<input type="hidden" name="nombreA[]" id="nombreA[]" value="'+nombreRelacion+'" />'+nombreRelacion;
-        celda1.innerHTML = '<input type="hidden" name="relacionA[]" id="relacionA[]" value="'+relacion+'" />'+selected;
-        celda2.innerHTML = '<button type="button" onclick="eliminarFila(this)" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button>';
+        celda1.innerHTML = '<input type="hidden" name="cedulaA[]" id="cedulaA[]" value="'+cedulaRelacion+'" />'+cedulaRelacion;
+        celda2.innerHTML = '<input type="hidden" name="edadA[]" id="edadA[]" value="'+edadRelacion+'" />'+edadRelacion;
+        celda3.innerHTML = '<input type="hidden" name="relacionA[]" id="relacionA[]" value="'+relacion+'" />'+selected;
+        celda4.innerHTML = '<button type="button" onclick="eliminarFila(this)" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i></button>';
         $('#relacion').val('');
         document.getElementById("nombreRelacion").value = "";
+        document.getElementById("cedulaRelacion").value = "";
+        document.getElementById("edadRelacion").value = "";
     }
 }
 
@@ -808,23 +822,39 @@ $(function() {
                     $("button#cancelar").addClass('disabled');
                 },
                 success:function(respuesta){
-                    new PNotify({
-                        title: 'Realizado',
-                        text: 'Atleta '+accion+' satisfactoriamente.',
-                        addclass: 'bg-success alert-styled-right',
-                        type: 'success'
-                    });
-                    if($("button#atletaSubmit").attr('data') == 1){
-                        $('form#atletaForm').reset();
-                        $("#labelNombre").html("--");
-                        $("#labelApellido").html("--");
-                        $("#labelCedula").html("--");
-                        $("#labelSexo").html("--");
-                        $("#labelFechaNacimiento").html("--");
-                        $("#labelEdad").html("--");
-                        $("#labelTelefonoMovil").html("--");
-                        $("#labelCargo").html("--");
-                        $(document).find('.validation-valid-label').remove();
+                    var alertMessage = '';
+                    var count = 0;
+                    if(respuesta.validations == false){
+                        $.each(respuesta.errors, function(index, value){
+                            count++;
+                            alertMessage+= count+". "+value+"<br>";
+                        });
+                        new PNotify({
+                            title: 'Alerta',
+                            text: alertMessage,
+                            addclass: 'bg-primary alert-styled-right',
+                            type: 'info'
+                        });
+                    }
+                    else if(respuesta.validations == true){
+                        new PNotify({
+                            title: 'Realizado',
+                            text: 'Atleta '+accion+' satisfactoriamente.',
+                            addclass: 'bg-success alert-styled-right',
+                            type: 'success'
+                        });
+                        if($("button#atletaSubmit").attr('data') == 1){
+                            $('form#atletaForm').reset();
+                            $("#labelNombre").html("--");
+                            $("#labelApellido").html("--");
+                            $("#labelCedula").html("--");
+                            $("#labelSexo").html("--");
+                            $("#labelFechaNacimiento").html("--");
+                            $("#labelEdad").html("--");
+                            $("#labelTelefonoMovil").html("--");
+                            $("#labelCargo").html("--");
+                            $(document).find('.validation-valid-label').remove();
+                        }
                     }
                     $("button#atletaSubmit").removeClass('disabled');
                     $("button#cancelar").removeClass('disabled');
@@ -1290,23 +1320,39 @@ $(function() {
                     $("button#cancelar").addClass('disabled');
                 },
                 success:function(respuesta){
-                    new PNotify({
-                        title: 'Realizado',
-                        text: 'Registro '+accion+' satisfactoriamente.',
-                        addclass: 'bg-success alert-styled-right',
-                        type: 'success'
-                    });
-                    if($("button#eleccionSubmit").attr('data') == 1){
-                        $('form#eleccionForm').reset();
-                        $("#labelNombre").html("--");
-                        $("#labelApellido").html("--");
-                        $("#labelCedula").html("--");
-                        $("#labelSexo").html("--");
-                        $("#labelFechaNacimiento").html("--");
-                        $("#labelEdad").html("--");
-                        $("#labelTelefonoMovil").html("--");
-                        $("#labelCargo").html("--");
-                        $(document).find('.validation-valid-label').remove();
+                    var alertMessage = '';
+                    var count = 0;
+                    if(respuesta.validations == false){
+                        $.each(respuesta.errors, function(index, value){
+                            count++;
+                            alertMessage+= count+". "+value+"<br>";
+                        });
+                        new PNotify({
+                            title: 'Alerta',
+                            text: alertMessage,
+                            addclass: 'bg-primary alert-styled-right',
+                            type: 'info'
+                        });
+                    }
+                    else if(respuesta.validations == true){
+                        new PNotify({
+                            title: 'Realizado',
+                            text: 'Registro '+accion+' satisfactoriamente.',
+                            addclass: 'bg-success alert-styled-right',
+                            type: 'success'
+                        });
+                        if($("button#eleccionSubmit").attr('data') == 1){
+                            $('form#eleccionForm').reset();
+                            $("#labelNombre").html("--");
+                            $("#labelApellido").html("--");
+                            $("#labelCedula").html("--");
+                            $("#labelSexo").html("--");
+                            $("#labelFechaNacimiento").html("--");
+                            $("#labelEdad").html("--");
+                            $("#labelTelefonoMovil").html("--");
+                            $("#labelCargo").html("--");
+                            $(document).find('.validation-valid-label').remove();
+                        }
                     }
                     $("button#eleccionSubmit").removeClass('disabled');
                     $("button#cancelar").removeClass('disabled');

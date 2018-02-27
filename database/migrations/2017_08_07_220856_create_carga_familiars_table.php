@@ -16,6 +16,8 @@ class CreateCargaFamiliarsTable extends Migration
         Schema::create('carga_familiar', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
+            $table->string('cedula');
+            $table->string('edad');
             $table->string('relacion');
             $table->integer('afiliado')->unsigned();
             $table->foreign('afiliado')->references('id')->on('afiliados')->onDelete('cascade');

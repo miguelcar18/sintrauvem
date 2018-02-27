@@ -110,6 +110,8 @@ class AfiliadoController extends Controller
                 $camposCarga = [
                     'nombre'    => $request['nombreA'][$i], 
                     'relacion'  => $request['relacionA'][$i],
+                    'cedula'    => $request['cedulaA'][$i], 
+                    'edad'      => $request['edadA'][$i], 
                     'afiliado'  => $ultimoIdOrden
                 ];
                 CargaFamiliar::create($camposCarga);
@@ -155,7 +157,7 @@ class AfiliadoController extends Controller
      * @param  \App\Afiliado  $afiliados
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Afiliado $afiliados, $id)
+    public function update(EleccionRequest $request, Afiliado $afiliados, $id)
     {
         if($request->ajax())
         {
@@ -218,6 +220,8 @@ class AfiliadoController extends Controller
                     $camposCarga = [
                         'nombre'    => $request['nombreA'][$i], 
                         'relacion'  => $request['relacionA'][$i],
+                        'cedula'    => $request['cedulaA'][$i], 
+                        'edad'      => $request['edadA'][$i], 
                         'afiliado'  => $this->afiliado->id
                     ];
                     CargaFamiliar::create($camposCarga);

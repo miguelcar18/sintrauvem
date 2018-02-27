@@ -7,6 +7,7 @@ use App\Atleta;
 use App\Disciplina;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Http\Requests\AtletaRequest;
 use Session;
 use App;
 use Auth;
@@ -51,7 +52,7 @@ class AtletaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(AtletaRequest $request)
     {
         if($request->ajax()) {
             $campos = [
@@ -61,7 +62,7 @@ class AtletaController extends Controller
             ];
             Atleta::create($campos);
             return response()->json([
-                'nuevoContenido' => $request->all()
+                'validations' => true
             ]);
         }
     }
@@ -97,7 +98,7 @@ class AtletaController extends Controller
      * @param  \App\Atleta  $atleta
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Atleta $atleta)
+    public function update(AtletaRequest $request, Atleta $atleta)
     {
         if($request->ajax()) {
             $campos = [
@@ -108,7 +109,7 @@ class AtletaController extends Controller
             $atleta->fill($campos);
             $atleta->save();
             return response()->json([
-                'nuevoContenido' => $campos           
+                'validations' => true           
             ]);
         }
     }

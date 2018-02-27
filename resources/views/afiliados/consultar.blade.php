@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <label class="col-lg-2 col-lg-offset-4 control-label text-bold">Estado:</label>
                             <div class="col-lg-3">
-                                {!! Form::select('consultaEstado', array('' => 'Seleccione', 'Activo' => 'Activo', 'Pensionado' => 'Pensionado'), null, $attributes = array('id' => 'consultaEstado', 'class' => 'form-control')) !!}
+                                {!! Form::select('consultaEstado', array('' => 'Seleccione', 'Activo' => 'Activo', 'Jubilado' => 'Jubilado', 'Pensionado' => 'Pensionado'), null, $attributes = array('id' => 'consultaEstado', 'class' => 'form-control')) !!}
                             </div>
                         </div>
                         <div class="form-group">

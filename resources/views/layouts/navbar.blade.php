@@ -74,7 +74,7 @@
 				</a>
 
 				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a href="{{ URL::route('usuarios.index') }}">Listar usuarios</a></li>
+					<li><a href="{{ URL::route('usuarios.index') }}">Lista de usuarios</a></li>
 					<li><a href="{{ URL::route('usuarios.create') }}">Agregar usuario</a></li>
 				</ul>
 			</li>

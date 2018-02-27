@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AfiliadoRequest extends FormRequest
+class AtletaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,14 +18,14 @@ class AfiliadoRequest extends FormRequest
 
     public function messages(){
         return [
-            'cedula.required'   => 'El campo :attribute es obligatorio.', 
-            'cedula.unique'     => 'La :attribute ingresada ya ha sido registrado.', 
+            'afiliado.required'   => 'El campo :attribute es obligatorio.', 
+            'afiliado.unique'     => 'El :attribute seleccionado ya ha sido registrado.', 
         ];
     }
 
     public function attributes(){
         return [
-            'cedula' => 'cédula'
+            'afiliado' => 'afiliado'
         ];
     }
 
@@ -49,12 +49,12 @@ class AfiliadoRequest extends FormRequest
             case 'DELETE': { return []; }
             case 'POST': {
                 return [
-                    'cedula' => 'required|unique:afiliados'
+                    'afiliado' => 'required|unique:atletas'
                 ];
             }
             case 'PUT': {
                 return [
-                    'cedula' => 'required'
+                    'afiliado' => 'required'
                 ];
             }
             case 'PATCH': { return []; }

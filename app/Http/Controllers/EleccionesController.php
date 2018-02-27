@@ -6,6 +6,7 @@ use App\Afiliado;
 use App\Elecciones;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Http\Requests\EleccionRequest;
 use Session;
 use App;
 use Auth;
@@ -49,7 +50,7 @@ class EleccionesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(EleccionRequest $request)
     {
         if($request->ajax()) {
             $campos = [
@@ -59,7 +60,7 @@ class EleccionesController extends Controller
             ];
             Elecciones::create($campos);
             return response()->json([
-                'nuevoContenido' => $request->all()
+                'validations' => true
             ]);
         }
     }
@@ -94,7 +95,7 @@ class EleccionesController extends Controller
      * @param  \App\Elecciones  $elecciones
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Elecciones $eleccione)
+    public function update(EleccionRequest $request, Elecciones $eleccione)
     {
         if($request->ajax()) {
             $campos = [
@@ -105,7 +106,7 @@ class EleccionesController extends Controller
             $eleccione->fill($campos);
             $eleccione->save();
             return response()->json([
-                'nuevoContenido' => $campos           
+                'validations' => true
             ]);
         }
     }

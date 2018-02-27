@@ -18,7 +18,7 @@ class CargaFamiliar extends Model
      *
      * @var array
      */
-    protected $fillable = ['nombre', 'relacion', 'afiliado'];
+    protected $fillable = ['nombre', 'relacion', 'cedula', 'edad', 'afiliado'];
 
     public function nombreAfiliado() {
         return $this->hasOne('App\Afiliado', 'id', 'afiliado');

@@ -94,7 +94,7 @@
 <div class="form-group">
     <label class="col-lg-1 control-label">Estado:</label>
     <div class="col-lg-3">
-        {!! Form::select('status', array('' => 'Seleccione', 'Activo' => 'Activo', 'Pensionado' => 'Pensionado'), null, $attributes = array('id' => 'status', 'class' => 'form-control', 'required' => 'required')) !!}
+        {!! Form::select('status', array('' => 'Seleccione', 'Activo' => 'Activo', 'Jubilado' => 'Jubilado', 'Pensionado' => 'Pensionado'), null, $attributes = array('id' => 'status', 'class' => 'form-control', 'required' => 'required')) !!}
     </div>
     <label class="col-lg-1 control-label">Dependencia:</label>
     <div class="col-lg-3">
